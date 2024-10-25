@@ -84,13 +84,29 @@ func collectValues(node *Node, values *[]int) {
 	}
 }
 
-// CompareTrees compares two BSTs for equality
-func CompareTrees(a, b *Node) bool {
+func areIdentical(a, b *Node) bool {
 	if a == nil && b == nil {
 		return true
 	}
 	if a == nil || b == nil {
 		return false
 	}
-	return a.value == b.value && CompareTrees(a.left, b.left) && CompareTrees(a.right, b.right)
+	return a.value == b.value && areIdentical(a.left, b.left) && areIdentical(a.right, b.right)
+}
+
+// CompareTrees compares two BSTs for equality
+// checks if two BSTs contain the same values
+func CompareTrees(a, b *BST) bool {
+	var valuesA, valuesB []int
+	collectValues(a.root, &valuesA)
+	collectValues(b.root, &valuesB)
+	if len(valuesA) != len(valuesB) {
+		return false
+	}
+	for i := range valuesA {
+		if valuesA[i] != valuesB[i] {
+			return false
+		}
+	}
+	return true
 }
